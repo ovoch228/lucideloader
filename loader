@@ -1,0 +1,68 @@
+local lucideicons = {}
+local icons
+
+local function loadIcons()
+    local success, result = pcall(function()
+        return game:HttpGet('https://raw.githubusercontent.com/SiriusSoftwareLtd/Rayfield/refs/heads/main/icons.lua')
+    end)
+    
+    if success then
+        local loadSuccess, loadResult = pcall(function()
+            return loadstring(result)()
+        end)
+        
+        if loadSuccess then
+            Icons = loadResult
+            return true
+        else
+            warn("lucide icons: failed to load library - " .. tostring(loadResult))
+            return false
+        end
+    else
+        warn("lucide icons: failed to fetch from github - " .. tostring(result))
+        return false
+    end
+end
+
+function lucideicons.getIcon(name)
+    if not icons then
+        warn("lucide Icons not loaded")
+        return nil
+    end
+    
+    name = string.match(string.lower(name), "^%s*(.*)%s*$")
+    
+    local sizedicons = icons['48px']
+    if not sizedicons then
+        warn("lucide icons: 48px size not found")
+        return nil
+    end
+    
+    local icondata = sizedIcons[name]
+    if not icondata then
+        warn(string.format("lucide icons: icon '%s' not found", name))
+        return nil
+    end
+
+    local imageRectSize = iconData[2]
+    local imageRectOffset = iconData[3]
+
+    return {
+        id = iconData[1],
+        imageRectSize = Vector2.new(imageRectSize[1], imageRectSize[2]),
+        imageRectOffset = Vector2.new(imageRectOffset[1], imageRectOffset[2])
+    }
+end
+
+function lucideicons.init()
+    local success = loadIcons()
+    if success then
+        return true
+    else
+        warn("lucide icons: failed to load library")
+        return false
+    end
+end
+
+
+return lucideicons
