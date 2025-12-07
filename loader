@@ -12,7 +12,7 @@ local function loadIcons()
         end)
         
         if loadSuccess then
-            Icons = loadResult
+            icons = loadResult
             return true
         else
             warn("lucide icons: failed to load library - " .. tostring(loadResult))
@@ -38,17 +38,17 @@ function lucideicons.getIcon(name)
         return nil
     end
     
-    local icondata = sizedIcons[name]
+    local icondata = sizedicons[name]
     if not icondata then
         warn(string.format("lucide icons: icon '%s' not found", name))
         return nil
     end
 
-    local imageRectSize = iconData[2]
-    local imageRectOffset = iconData[3]
+    local imageRectSize = icondata[2]
+    local imageRectOffset = icondata[3]
 
     return {
-        id = iconData[1],
+        id = icondata[1],
         imageRectSize = Vector2.new(imageRectSize[1], imageRectSize[2]),
         imageRectOffset = Vector2.new(imageRectOffset[1], imageRectOffset[2])
     }
